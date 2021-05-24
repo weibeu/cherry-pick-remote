@@ -2,8 +2,8 @@ name: "Cherry Pick Remote"
 description: "Cherry pick commits from remote repository."
 
 inputs:
-    remote-repository:
-        description: "The URL of the remote git repository to cherry pick commits from."
+    repository:
+        description: "The GitHub repository to cherry pick commits from. For example: weibeu/cherry-pick-remote-trigger."
         required: true
     branch:
         description: "The name of the branch to rebase the cherry picked commits to."
@@ -43,7 +43,7 @@ runs:
                 git config user.email "${{ inputs.email }}"
         - name: Cherry pick commits from remote repository
             run: |
-                git remote add remote-repository ${{ inputs["remote-repository"] }}
+                git remote add remote-repository https://github.com/${{ inputs.repository }}.git
                 git fetch remote-repository --force
                 git cherry-pick -x ${{ github.event.client_payload.before }}..${{ github.event.client_payload.after }}
         - name: Push updated ref to specified branch
