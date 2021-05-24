@@ -43,7 +43,7 @@ runs:
                 git config user.email "${{ inputs.email }}"
         - name: Cherry pick commits from remote repository
             run: |
-                git remote add remote-repository https://github.com/${{ inputs.repository }}.git
+                git remote add remote-repository $GITHUB_SERVER_URL/${{ inputs.repository }}.git
                 git fetch remote-repository --force
                 git cherry-pick -x ${{ github.event.client_payload.before }}..${{ github.event.client_payload.after }}
         - name: Push updated ref to specified branch
