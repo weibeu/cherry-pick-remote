@@ -26,6 +26,7 @@ runs:
   steps:
     - name: Check if trigger was from remote repository
       if: github.event.action != "push-dispatch"
+      shell: bash
       run: exit 1
     - name: Checkout to target branch
       uses: actions/checkout@v2
