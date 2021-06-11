@@ -26,6 +26,6 @@ inputs:
 
 runs:
   using: "node12"
-  pre: "dist/pre.js"
-  main: "dist/index.js" 
-  post: "dist/post.js"
+  pre: "lib/pre.js"
+  main: "lib/main.js" 
+  post: "lib/post.js"
