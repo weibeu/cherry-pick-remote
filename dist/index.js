@@ -40,7 +40,9 @@ const core = __importStar(__webpack_require__(2186));
 const github = __importStar(__webpack_require__(5438));
 const exec_1 = __webpack_require__(1514);
 const child_process_1 = __webpack_require__(3129);
+const path_1 = __webpack_require__(5622);
 const REMOTE_REPOSITORY_TAG = "remote-repository";
+const BASE_PATH = __webpack_require__.ab + "src";
 var repository = core.getInput("repository");
 var branch = core.getInput("branch");
 var path = core.getInput("path");
@@ -58,7 +60,7 @@ function checkoutTargetBranch() {
         }
         try {
             core.info(`Checking out to ${branch} branch.`);
-            child_process_1.execSync(`node ${__dirname}/checkout/dist/index.js`);
+            child_process_1.execSync(`node ${BASE_PATH}/checkout/dist/index.js`);
         }
         catch (error) {
             core.setFailed(error.message);
@@ -69,7 +71,7 @@ function setCredentials() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             core.info("Going to setup the GitHub credentials.");
-            child_process_1.execSync(`node ${__dirname}/setup-git-credentials/lib/main.js`);
+            child_process_1.execSync(`node ${BASE_PATH}/setup-git-credentials/lib/main.js`);
         }
         catch (error) {
             core.setFailed(error.message);
