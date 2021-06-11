@@ -40,48 +40,62 @@ const core = __importStar(__webpack_require__(2186));
 const github = __importStar(__webpack_require__(5438));
 const exec_1 = __webpack_require__(1514);
 const REMOTE_REPOSITORY_TAG = "remote-repository";
-function exec_(command) {
-    return __awaiter(this, void 0, void 0, function* () {
-        var _ = command.split(" ");
-        yield exec_1.exec(_[0], _.slice(1));
-    });
-}
-function run() {
+var repository = core.getInput("repository");
+var branch = core.getInput("branch");
+var path = core.getInput("path");
+var token = core.getInput("token");
+var username = core.getInput("username");
+var email = core.getInput("email");
+function initialize() {
     return __awaiter(this, void 0, void 0, function* () {
         if (github.context.payload.action !== "push-dispatch") {
             core.setFailed("Received GitHub event which is not push-dispatch.");
             return;
         }
         try {
-            var repository = core.getInput("repository");
-            var branch = core.getInput("branch");
-            var path = core.getInput("path");
-            var token = core.getInput("token");
-            var credentials = core.getInput("credentials");
-            var username = core.getInput("username");
-            var email = core.getInput("email");
             core.setOutput("ref", branch);
             core.setOutput("fetch-depth", 0);
+            core.setOutput("credentials", token);
             core.info(`Checking out to ${branch} branch.`);
             var _checkout = __webpack_require__(1832);
             core.info("Going to setup the GitHub credentials.");
             var _setupGitCredentials = __webpack_require__(5266);
             core.info("Going to configure Git user details.");
-            yield exec_(`git config user.name "${username}"`);
-            yield exec_(`git config user.email "${email}"`);
-            core.info("Cherry pick commits from source repository.");
-            yield exec_(`git remote add ${REMOTE_REPOSITORY_TAG} https://github.com/${repository}`);
-            yield exec_(`git fetch ${REMOTE_REPOSITORY_TAG} --force`);
-            yield exec_(`git cherry-pick -x ${github.context.payload.client_payload.before}..${github.context.payload.client_payload.after}`);
-            core.info(`Push updated ref to ${branch} branch`);
-            yield exec_(`git push --force`);
+            yield exec_1.exec(`git config user.name "${username}"`);
+            yield exec_1.exec(`git config user.email "${email}"`);
         }
         catch (error) {
             core.setFailed(error.message);
         }
     });
 }
-run();
+function cherryPick() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            core.info("Going to cherry pick commits from source repository.");
+            yield exec_1.exec(`git remote add ${REMOTE_REPOSITORY_TAG} https://github.com/${repository}`);
+            yield exec_1.exec(`git fetch ${REMOTE_REPOSITORY_TAG} --force`);
+            yield exec_1.exec(`git cherry-pick -x ${github.context.payload.client_payload.before}..${github.context.payload.client_payload.after}`);
+        }
+        catch (error) {
+            core.setFailed(error.message);
+        }
+    });
+}
+function updateStream() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            core.info(`Going to push updated refs to ${branch} branch`);
+            yield exec_1.exec(`git push --force`);
+        }
+        catch (error) {
+            core.setFailed(error.message);
+        }
+    });
+}
+initialize();
+cherryPick();
+updateStream();
 
 
 /***/ }),
