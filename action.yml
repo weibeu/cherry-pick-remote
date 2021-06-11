@@ -1,57 +1,11 @@
-name: "Cherry Pick Remote"
-description: "Cherry pick commits from remote repository."
-
+name: 'Your name here'
+description: 'Provide a description here'
+author: 'Your name or organization here'
 inputs:
-  repository:
-    description: "The GitHub repository to cherry pick commits from. For example: weibeu/cherry-pick-remote-trigger."
+  milliseconds: # change this
     required: true
-  branch:
-    description: "The name of the branch to rebase the cherry picked commits to."
-    default: "main"
-  path:
-    description: "The path within the repository files to consider for cherry picks."
-    default: "."
-  token:
-    description: "Personal access token (PAT) to run authenticated git commands."
-    default: ${{ github.token }}
-  username:
-    description: "The username to use for cherry picking commits."
-    required: true
-  email:
-    description: "The email to use for cherry picking commits."
-    required: true
-
+    description: 'input description here'
+    default: 'default value if applicable'
 runs:
-  using: "composite"
-  steps:
-    - name: Check if trigger was from remote repository
-      if: github.event.action != "push-dispatch"
-      shell: bash
-      run: exit 1
-    - name: Checkout to target branch
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-        ref: ${{ inputs.branch }}
-        token: ${{ inputs.token }}
-    - name: Setup GitHub authentication
-      uses: fusion-engineering/setup-git-credentials@v2
-      with:
-        credentials: ${{ inputs.token }}
-    - name: Perform Git user configurations
-      shell: bash
-      run: |
-        git config user.name "${{ inputs.username }}"
-        git config user.email "${{ inputs.email }}"
-    - name: Cherry pick commits from remote repository
-      shell: bash
-      run: |
-        git remote add remote-repository $GITHUB_SERVER_URL/${{ inputs.repository }}.git
-        git fetch remote-repository --force
-        git cherry-pick -x ${{ github.event.client_payload.before }}..${{ github.event.client_payload.after }}
-    - name: Push updated ref to specified branch
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ inputs.token }}
-        branch: ${{ inputs.branch }}
-        force: true
+  using: 'node12'
+  main: 'dist/index.js'
