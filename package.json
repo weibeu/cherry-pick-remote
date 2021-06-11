@@ -27,10 +27,13 @@
   "dependencies": {
     "@actions/core": "^1.2.6",
     "@actions/exec": "^1.1.0",
-    "@actions/github": "^5.0.0"
+    "@actions/github": "^5.0.0",
+    "checkout": "file:src/checkout",
+    "setup-git-credentials": "file:src/setup-git-credentials"
   },
   "devDependencies": {
     "@types/jest": "^26.0.15",
+    "@types/js-yaml": "^4.0.1",
     "@types/node": "^14.14.9",
     "@typescript-eslint/parser": "^4.8.1",
     "@vercel/ncc": "^0.25.1",
@@ -39,7 +42,7 @@
     "eslint-plugin-jest": "^24.1.3",
     "jest": "^26.6.3",
     "jest-circus": "^26.6.3",
-    "js-yaml": "^3.14.0",
+    "js-yaml": "^3.13.0",
     "prettier": "2.2.1",
     "ts-jest": "^26.4.4",
     "typescript": "^4.1.3"
