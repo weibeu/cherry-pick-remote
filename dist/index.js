@@ -46,20 +46,38 @@ var path = core.getInput("path");
 var token = core.getInput("token");
 var username = core.getInput("username");
 var email = core.getInput("email");
-function initialize() {
+core.setOutput("ref", branch);
+core.setOutput("fetch-depth", 0);
+core.setOutput("credentials", token);
+function checkoutTargetBranch() {
     return __awaiter(this, void 0, void 0, function* () {
         if (github.context.payload.action !== "push-dispatch") {
             core.setFailed("Received GitHub event which is not push-dispatch.");
             return;
         }
         try {
-            core.setOutput("ref", branch);
-            core.setOutput("fetch-depth", 0);
-            core.setOutput("credentials", token);
             core.info(`Checking out to ${branch} branch.`);
             var _checkout = __webpack_require__(1832);
+        }
+        catch (error) {
+            core.setFailed(error.message);
+        }
+    });
+}
+function setCredentials() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
             core.info("Going to setup the GitHub credentials.");
             var _setupGitCredentials = __webpack_require__(5266);
+        }
+        catch (error) {
+            core.setFailed(error.message);
+        }
+    });
+}
+function configureUser() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
             core.info("Going to configure Git user details.");
             yield exec_1.exec(`git config user.name "${username}"`);
             yield exec_1.exec(`git config user.email "${email}"`);
@@ -93,7 +111,8 @@ function updateStream() {
         }
     });
 }
-initialize().then(_ => cherryPick().then(_ => updateStream().then(_ => { })));
+const PROMISES = [checkoutTargetBranch, setCredentials, configureUser, cherryPick, updateStream];
+PROMISES.reduce((p, f) => p.then(f), Promise.resolve()).then(() => { });
 
 
 /***/ }),
