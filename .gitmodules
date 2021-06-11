@@ -1,0 +1,6 @@
+[submodule "checkout"]
+	path = checkout
+	url = https://github.com/actions/checkout.git
+[submodule "setup-git-credentials"]
+	path = setup-git-credentials
+	url = https://github.com/fusion-engineering/setup-git-credentials.git
