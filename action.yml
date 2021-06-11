@@ -1,11 +1,26 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: "Cherry Pick Remote"
+description: "Cherry pick commits from remote repository."
+
 inputs:
-  milliseconds: # change this
+  repository:
+    description: "The GitHub repository to cherry pick commits from. For example: weibeu/cherry-pick-remote-trigger."
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+  branch:
+    description: "The name of the branch to rebase the cherry picked commits to."
+    default: "main"
+  path:
+    description: "The path within the repository files to consider for cherry picks."
+    default: "."
+  token:
+    description: "Personal access token (PAT) to run authenticated git commands."
+    default: ${{ github.token }}
+  username:
+    description: "The username to use for cherry picking commits."
+    required: true
+  email:
+    description: "The email to use for cherry picking commits."
+    required: true
+
 runs:
-  using: 'node12'
-  main: 'dist/index.js'
+  using: "node12"
+  main: "dist/index.js" 
