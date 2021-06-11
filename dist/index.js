@@ -62,10 +62,10 @@ function run() {
             core.setOutput("ref", branch);
             core.setOutput("fetch-depth", 0);
             core.setOutput("credentials", token);
-            core.info(`Checking out to ${branch} branch.`);
-            var _checkout = __webpack_require__(1832);
             core.info("Going to setup the GitHub credentials.");
             var _setupGitCredentials = __webpack_require__(5266);
+            core.info(`Checking out to ${branch} branch.`);
+            var _checkout = __webpack_require__(1832);
             core.info("Going to configure Git user details.");
             yield exec_(`git config user.name "${username}"`);
             yield exec_(`git config user.email "${email}"`);
