@@ -1,6 +1,7 @@
 import * as core from "@actions/core"
 import * as github from "@actions/github"
 import { exec } from '@actions/exec'
+import { execFileSync } from "child_process"
 
 const REMOTE_REPOSITORY_TAG = "remote-repository"
 
@@ -22,7 +23,7 @@ async function checkoutTargetBranch(): Promise<void> {
   }
   try {
     core.info(`Checking out to ${branch} branch.`)
-    var _checkout = require("checkout/dist/index.js")
+    execFileSync("checkout/dist/index.js")
   } catch(error) {
     core.setFailed(error.message)
   }
@@ -31,7 +32,7 @@ async function checkoutTargetBranch(): Promise<void> {
 async function setCredentials(): Promise<void> {
   try {
     core.info("Going to setup the GitHub credentials.")
-    var _setupGitCredentials = require("setup-git-credentials/lib/main.js")
+    execFileSync("setup-git-credentials/lib/main.js")
   } catch (error) {
     core.setFailed(error.message)
   }
