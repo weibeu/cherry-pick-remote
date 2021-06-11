@@ -21,18 +21,18 @@ async function run(): Promise<void> {
     var branch = core.getInput("branch")
     var path = core.getInput("path")
     var token = core.getInput("token")
+    var credentials = core.getInput("credentials")
     var username = core.getInput("username")
     var email = core.getInput("email")
 
     core.setOutput("ref", branch)
     core.setOutput("fetch-depth", 0)
-    core.setOutput("credentials", token)
-
-    core.info("Going to setup the GitHub credentials.")
-    var _setupGitCredentials = require("setup-git-credentials/lib/main.js")
 
     core.info(`Checking out to ${branch} branch.`)
     var _checkout = require("checkout/dist/index.js")
+
+    core.info("Going to setup the GitHub credentials.")
+    var _setupGitCredentials = require("setup-git-credentials/lib/main.js")
 
     core.info("Going to configure Git user details.")
     await exec_(`git config user.name "${username}"`)

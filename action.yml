@@ -14,6 +14,9 @@ inputs:
   token:
     description: "Personal access token (PAT) to run authenticated git commands."
     default: ${{ github.token }}
+  credentials:
+    description: "Personal access token (PAT) to run authenticated git commands."
+    default: ${{ github.token }}
   username:
     description: "The username to use for cherry picking commits."
     required: true
