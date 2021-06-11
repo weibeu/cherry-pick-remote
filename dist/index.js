@@ -58,7 +58,7 @@ function checkoutTargetBranch() {
         }
         try {
             core.info(`Checking out to ${branch} branch.`);
-            child_process_1.execSync("node checkout/dist/index.js");
+            child_process_1.execSync(`node ${process.env["GITHUB_ACTION_PATH"]}/src/checkout/dist/index.js`);
         }
         catch (error) {
             core.setFailed(error.message);
@@ -69,7 +69,7 @@ function setCredentials() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             core.info("Going to setup the GitHub credentials.");
-            child_process_1.execSync("node setup-git-credentials/lib/main.js");
+            child_process_1.execSync(`node ${process.env["GITHUB_ACTION_PATH"]}/src/setup-git-credentials/lib/main.js`);
         }
         catch (error) {
             core.setFailed(error.message);
@@ -92,7 +92,7 @@ function cherryPick() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             core.info("Going to cherry pick commits from source repository.");
-            yield exec_1.exec(`git remote add ${REMOTE_REPOSITORY_TAG} https://github.com/${repository}`);
+            yield exec_1.exec(`git remote add ${REMOTE_REPOSITORY_TAG} ${process.env["GITHUB_SERVER_URL"]}/${repository}`);
             yield exec_1.exec(`git fetch ${REMOTE_REPOSITORY_TAG} --force`);
             yield exec_1.exec(`git cherry-pick -x ${github.context.payload.client_payload.before}..${github.context.payload.client_payload.after}`);
         }
