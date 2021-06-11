@@ -1,11 +1,10 @@
+import * as os from 'os';
 import * as core from "@actions/core"
 import * as github from "@actions/github"
+import { promises as fs } from 'fs';
 import { exec } from '@actions/exec'
-import { execSync } from "child_process"
-import { dirname } from "path"
 
 const REMOTE_REPOSITORY_TAG = "remote-repository"
-const BASE_PATH = `${dirname(__dirname)}/src`
 
 var repository = core.getInput("repository")
 var branch = core.getInput("branch")
@@ -14,28 +13,39 @@ var token = core.getInput("token")
 var username = core.getInput("username")
 var email = core.getInput("email")
 
-core.setOutput("ref", branch)
-core.setOutput("fetch-depth", 0)
-core.setOutput("credentials", token)
+function xdg_config_home() {
+	const xdg_config_home = process.env['XDG_CONFIG_HOME'];
+	if (xdg_config_home) return xdg_config_home;
+	return `${os.homedir()}/.config`
+}
 
-async function checkoutTargetBranch(): Promise<void> {
+async function setCredentials(): Promise<void> {
   if (github.context.payload.action !== "push-dispatch") {
     core.setFailed("Received GitHub event which is not push-dispatch.")
     return
   }
   try {
-    core.info(`Checking out to ${branch} branch.`)
-    execSync(`node ${BASE_PATH}/checkout/dist/index.js`)
-  } catch(error) {
+    core.info("Going to setup the GitHub credentials.")
+    const credentials = core.getInput('token', { required: true });
+
+    await fs.mkdir(`${xdg_config_home()}/git`, { recursive: true });
+    await fs.writeFile(`${xdg_config_home()}/git/credentials`, credentials, { flag: 'a', mode: 0o600 });
+
+    await exec('git', ['config', '--global', 'credential.helper', 'store']);
+    await exec('git', ['config', '--global', '--replace-all', 'url.https://github.com/.insteadOf', 'ssh://git@github.com/']);
+    await exec('git', ['config', '--global', '--add', 'url.https://github.com/.insteadOf', 'git@github.com:']);
+  } catch (error) {
     core.setFailed(error.message)
   }
 }
 
-async function setCredentials(): Promise<void> {
+async function checkoutTargetBranch(): Promise<void> {
   try {
-    core.info("Going to setup the GitHub credentials.")
-    execSync(`node ${BASE_PATH}/setup-git-credentials/lib/main.js`)
-  } catch (error) {
+    core.info(`Checking out to ${branch} branch.`)
+    await exec(`git clone ${process.env["GITHUB_SERVER_URL"]}/${process.env["GITHUB_REPOSITORY"]}`)
+    await exec(`cd ${process.env["GITHUB_REPOSITORY"]?.split("/")[0]}`)
+    await exec(`git checkout -b ${branch}`)
+  } catch(error) {
     core.setFailed(error.message)
   }
 }
@@ -70,4 +80,4 @@ async function updateStream(): Promise<void> {
   }
 }
 
-checkoutTargetBranch().then(() => setCredentials().then(() => configureUser().then(() => cherryPick().then(() => updateStream().then(() => {}))))).then(() => {})
+setCredentials().then(() => checkoutTargetBranch().then(() => configureUser().then(() => cherryPick().then(() => updateStream().then(() => {}))))).then(() => {})
