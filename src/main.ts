@@ -51,7 +51,7 @@ async function configureUser(): Promise<void> {
 async function cherryPick(): Promise<void> {
   try {
     core.info("Going to cherry pick commits from source repository.")
-    await exec(`git remote add ${REMOTE_REPOSITORY_TAG} https://github.com/${repository}`)
+    await exec(`git remote add ${REMOTE_REPOSITORY_TAG} ${process.env["GITHUB_SERVER_URL"]}/${repository}`)
     await exec(`git fetch ${REMOTE_REPOSITORY_TAG} --force`)
     await exec(`git cherry-pick -x ${ github.context.payload.client_payload.before }..${ github.context.payload.client_payload.after }`)
   } catch (error) {
