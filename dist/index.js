@@ -93,9 +93,7 @@ function updateStream() {
         }
     });
 }
-initialize();
-cherryPick();
-updateStream();
+initialize().then(_ => cherryPick().then(_ => updateStream().then(_ => { })));
 
 
 /***/ }),
