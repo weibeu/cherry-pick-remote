@@ -58,7 +58,7 @@ function checkoutTargetBranch() {
         }
         try {
             core.info(`Checking out to ${branch} branch.`);
-            child_process_1.execSync(`node ${process.env["GITHUB_ACTION_PATH"]}/src/checkout/dist/index.js`);
+            child_process_1.execSync(`node ${__dirname}/checkout/dist/index.js`);
         }
         catch (error) {
             core.setFailed(error.message);
@@ -69,7 +69,7 @@ function setCredentials() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             core.info("Going to setup the GitHub credentials.");
-            child_process_1.execSync(`node ${process.env["GITHUB_ACTION_PATH"]}/src/setup-git-credentials/lib/main.js`);
+            child_process_1.execSync(`node ${__dirname}/setup-git-credentials/lib/main.js`);
         }
         catch (error) {
             core.setFailed(error.message);

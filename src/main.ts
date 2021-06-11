@@ -23,7 +23,7 @@ async function checkoutTargetBranch(): Promise<void> {
   }
   try {
     core.info(`Checking out to ${branch} branch.`)
-    execSync(`node ${process.env["GITHUB_ACTION_PATH"]}/src/checkout/dist/index.js`)
+    execSync(`node ${__dirname}/checkout/dist/index.js`)
   } catch(error) {
     core.setFailed(error.message)
   }
@@ -32,7 +32,7 @@ async function checkoutTargetBranch(): Promise<void> {
 async function setCredentials(): Promise<void> {
   try {
     core.info("Going to setup the GitHub credentials.")
-    execSync(`node ${process.env["GITHUB_ACTION_PATH"]}/src/setup-git-credentials/lib/main.js`)
+    execSync(`node ${__dirname}/setup-git-credentials/lib/main.js`)
   } catch (error) {
     core.setFailed(error.message)
   }
