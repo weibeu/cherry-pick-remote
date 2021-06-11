@@ -67,6 +67,4 @@ async function updateStream(): Promise<void> {
   }
 }
 
-const PROMISES = [checkoutTargetBranch, setCredentials, configureUser, cherryPick, updateStream];
-
-PROMISES.reduce((p, f) => p.then(f), Promise.resolve()).then(() => {})
+checkoutTargetBranch().then(() => setCredentials().then(() => configureUser().then(() => cherryPick().then(() => updateStream().then(() => {}))))).then(() => {})
