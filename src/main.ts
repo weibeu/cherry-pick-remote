@@ -36,7 +36,7 @@ async function run(): Promise<void> {
 
     core.info("Going to configure Git user details.")
     await exec_(`git config user.name "${username}"`)
-    await exec(`git config user.email "${email}"`)
+    await exec_(`git config user.email "${email}"`)
 
     core.info("Cherry pick commits from source repository.")
     await exec_(`git remote add ${REMOTE_REPOSITORY_TAG} https://github.com/${repository}`)

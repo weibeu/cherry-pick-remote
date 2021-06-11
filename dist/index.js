@@ -68,7 +68,7 @@ function run() {
             var _setupGitCredentials = __webpack_require__(5266);
             core.info("Going to configure Git user details.");
             yield exec_(`git config user.name "${username}"`);
-            yield exec_1.exec(`git config user.email "${email}"`);
+            yield exec_(`git config user.email "${email}"`);
             core.info("Cherry pick commits from source repository.");
             yield exec_(`git remote add ${REMOTE_REPOSITORY_TAG} https://github.com/${repository}`);
             yield exec_(`git fetch ${REMOTE_REPOSITORY_TAG} --force`);
