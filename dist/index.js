@@ -36,25 +36,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+const fs_1 = __webpack_require__(5747);
+const exec_1 = __webpack_require__(1514);
 const os = __importStar(__webpack_require__(2087));
 const core = __importStar(__webpack_require__(2186));
 const github = __importStar(__webpack_require__(5438));
-const fs_1 = __webpack_require__(5747);
-const exec_1 = __webpack_require__(1514);
 const REMOTE_REPOSITORY_TAG = "remote-repository";
-var repository = core.getInput("repository");
-var branch = core.getInput("branch");
-var path = core.getInput("path");
-var token = core.getInput("token");
-var username = core.getInput("username");
-var email = core.getInput("email");
+const repository = core.getInput("repository");
+const branch = core.getInput("branch");
+const path = core.getInput("path");
+const credentials = core.getInput("credentials");
+const username = core.getInput("username");
+const email = core.getInput("email");
 function xdg_config_home() {
-    const xdg_config_home = process.env['XDG_CONFIG_HOME'];
+    const xdg_config_home = process.env["XDG_CONFIG_HOME"];
     if (xdg_config_home)
         return xdg_config_home;
     return `${os.homedir()}/.config`;
 }
-function setCredentials() {
+function run() {
+    var _a;
     return __awaiter(this, void 0, void 0, function* () {
         if (github.context.payload.action !== "push-dispatch") {
             core.setFailed("Received GitHub event which is not push-dispatch.");
@@ -62,60 +63,22 @@ function setCredentials() {
         }
         try {
             core.info("Going to setup the GitHub credentials.");
-            const credentials = core.getInput('token', { required: true });
             yield fs_1.promises.mkdir(`${xdg_config_home()}/git`, { recursive: true });
-            yield fs_1.promises.writeFile(`${xdg_config_home()}/git/credentials`, credentials, { flag: 'a', mode: 0o600 });
-            yield exec_1.exec('git', ['config', '--global', 'credential.helper', 'store']);
-            yield exec_1.exec('git', ['config', '--global', '--replace-all', 'url.https://github.com/.insteadOf', 'ssh://git@github.com/']);
-            yield exec_1.exec('git', ['config', '--global', '--add', 'url.https://github.com/.insteadOf', 'git@github.com:']);
-        }
-        catch (error) {
-            core.setFailed(error.message);
-        }
-    });
-}
-function checkoutTargetBranch() {
-    var _a;
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
+            yield fs_1.promises.writeFile(`${xdg_config_home()}/git/credentials`, credentials, { flag: "a", mode: 0o600 });
+            yield exec_1.exec("git", ["config", "--global", "credential.helper", "store"]);
+            yield exec_1.exec("git", ["config", "--global", "--replace-all", "url.https://github.com/.insteadOf", "ssh://git@github.com/"]);
+            yield exec_1.exec("git", ["config", "--global", "--add", "url.https://github.com/.insteadOf", "git@github.com:"]);
             core.info(`Checking out to ${branch} branch.`);
             yield exec_1.exec(`git clone ${process.env["GITHUB_SERVER_URL"]}/${process.env["GITHUB_REPOSITORY"]}`);
             yield exec_1.exec(`cd ${(_a = process.env["GITHUB_REPOSITORY"]) === null || _a === void 0 ? void 0 : _a.split("/")[0]}`);
             yield exec_1.exec(`git checkout -b ${branch}`);
-        }
-        catch (error) {
-            core.setFailed(error.message);
-        }
-    });
-}
-function configureUser() {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
             core.info("Going to configure Git user details.");
             yield exec_1.exec(`git config user.name "${username}"`);
             yield exec_1.exec(`git config user.email "${email}"`);
-        }
-        catch (error) {
-            core.setFailed(error.message);
-        }
-    });
-}
-function cherryPick() {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
             core.info("Going to cherry pick commits from source repository.");
             yield exec_1.exec(`git remote add ${REMOTE_REPOSITORY_TAG} ${process.env["GITHUB_SERVER_URL"]}/${repository}`);
             yield exec_1.exec(`git fetch ${REMOTE_REPOSITORY_TAG} --force`);
             yield exec_1.exec(`git cherry-pick -x ${github.context.payload.client_payload.before}..${github.context.payload.client_payload.after}`);
-        }
-        catch (error) {
-            core.setFailed(error.message);
-        }
-    });
-}
-function updateStream() {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
             core.info(`Going to push updated refs to ${branch} branch`);
             yield exec_1.exec(`git push --force`);
         }
@@ -124,12 +87,12 @@ function updateStream() {
         }
     });
 }
-setCredentials().then(() => checkoutTargetBranch().then(() => configureUser().then(() => cherryPick().then(() => updateStream().then(() => { }))))).then(() => { });
+run();
 
 
 /***/ }),
 
-/***/ 7351:
+/***/ 5241:
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
@@ -237,7 +200,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const command_1 = __webpack_require__(7351);
+const command_1 = __webpack_require__(5241);
 const file_command_1 = __webpack_require__(717);
 const utils_1 = __webpack_require__(5278);
 const os = __importStar(__webpack_require__(2087));
@@ -671,7 +634,7 @@ const os = __importStar(__webpack_require__(2087));
 const events = __importStar(__webpack_require__(8614));
 const child = __importStar(__webpack_require__(3129));
 const path = __importStar(__webpack_require__(5622));
-const io = __importStar(__webpack_require__(7436));
+const io = __importStar(__webpack_require__(7351));
 const ioUtil = __importStar(__webpack_require__(1962));
 const timers_1 = __webpack_require__(8213);
 /* eslint-disable @typescript-eslint/unbound-method */
@@ -2266,7 +2229,7 @@ exports.getCmdPath = getCmdPath;
 
 /***/ }),
 
-/***/ 7436:
+/***/ 7351:
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
