@@ -35,7 +35,7 @@ async function run(): Promise<void> {
 
     core.info(`Checking out to ${branch} branch.`)
     await exec(`git clone ${process.env["GITHUB_SERVER_URL"]}/${process.env["GITHUB_REPOSITORY"]}`)
-    process.chdir(process.env["GITHUB_REPOSITORY"]?.split("/")[0] || String())
+    process.chdir(process.env["GITHUB_REPOSITORY"]?.split("/")[1] || String())
     await exec(`git checkout -b ${branch}`)
 
     core.info("Going to configure Git user details.")
