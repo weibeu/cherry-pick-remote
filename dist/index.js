@@ -70,7 +70,7 @@ function run() {
             yield exec_1.exec("git", ["config", "--global", "--add", "url.https://github.com/.insteadOf", "git@github.com:"]);
             core.info(`Checking out to ${branch} branch.`);
             yield exec_1.exec(`git clone ${process.env["GITHUB_SERVER_URL"]}/${process.env["GITHUB_REPOSITORY"]}`);
-            yield exec_1.exec(`cd ${(_a = process.env["GITHUB_REPOSITORY"]) === null || _a === void 0 ? void 0 : _a.split("/")[0]}`);
+            process.chdir(((_a = process.env["GITHUB_REPOSITORY"]) === null || _a === void 0 ? void 0 : _a.split("/")[0]) || String());
             yield exec_1.exec(`git checkout -b ${branch}`);
             core.info("Going to configure Git user details.");
             yield exec_1.exec(`git config user.name "${username}"`);
