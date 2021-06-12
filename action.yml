@@ -3,7 +3,7 @@ description: "Cherry pick commits from remote repository."
 
 inputs:
   repository:
-    description: "The GitHub repository to cherry pick commits from. For example: weibeu/cherry-pick-remote-trigger."
+    description: "The GitHub repository to cherry pick commits from."
     required: true
   branch:
     description: "The name of the branch to rebase the cherry picked commits to."
@@ -11,17 +11,14 @@ inputs:
   path:
     description: "The path within the repository files to consider for cherry picks."
     default: "."
-  token:
-    description: "Personal access token (PAT) to run authenticated git commands."
-    default: ${{ github.token }}
   credentials:
-    description: "Personal access token (PAT) to run authenticated git commands."
-    default: ${{ github.token }}
+    description: "The Git credentials to set for authorization with remote server."
+    required: true
   username:
-    description: "The username to use for cherry picking commits."
+    description: "The username to use as an author for cherry picking commits."
     required: true
   email:
-    description: "The email to use for cherry picking commits."
+    description: "The email to use as an author for cherry picking commits."
     required: true
 
 runs:
