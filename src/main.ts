@@ -48,7 +48,7 @@ async function run(): Promise<void> {
     await exec(`git cherry-pick -x ${ github.context.payload.client_payload.before }..${ github.context.payload.client_payload.after }`)
 
     core.info(`Going to push updated refs to ${branch} branch`)
-    await exec(`git push --force`)
+    await exec(`git push --set-upstream origin ${branch}`)
 
   } catch (error) {
     core.setFailed(error.message)
