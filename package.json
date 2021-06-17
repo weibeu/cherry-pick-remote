@@ -28,21 +28,20 @@
     "@actions/core": "^1.2.6",
     "@actions/exec": "^1.1.0",
     "@actions/github": "^5.0.0",
-    "setup-git-credentials": "file:src/setup-git-credentials",
-    "checkout": "file:src/checkout"
+    "minimatch": "^3.0.4"
   },
   "devDependencies": {
     "@types/jest": "^26.0.15",
     "@types/node": "^14.14.9",
     "@typescript-eslint/parser": "^4.8.1",
-    "@vercel/ncc": "^0.28.6",
+    "@vercel/ncc": "^0.25.1",
     "eslint": "^7.17.0",
     "eslint-plugin-github": "^4.1.1",
-    "eslint-plugin-jest": "^24.3.6",
+    "eslint-plugin-jest": "^24.1.3",
     "jest": "^26.6.3",
     "jest-circus": "^26.6.3",
     "prettier": "2.2.1",
     "ts-jest": "^26.4.4",
-    "typescript": "^4.1.3"
+    "typescript": "^4.3.4"
   }
 }
