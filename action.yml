@@ -8,9 +8,15 @@ inputs:
   branch:
     description: "The name of the branch to rebase the cherry picked commits to."
     default: "main"
-  path:
-    description: "The path within the repository files to consider for cherry picks."
-    default: "."
+  remote-branch:
+    description: "The name of the branch of remote repository to cherry pick commits from."
+    default: "main"
+  include-paths:
+    description: "The paths within the repository files to consider for cherry picks. Must be JSON serialized array of string."
+    default: null
+  exclude-paths:
+    description: "The paths within the repository files to exclude from cherry picks. Must be JSON serialized array of string."
+    default: null
   credentials:
     description: "The Git credentials to set for authorization with remote server."
     required: true
