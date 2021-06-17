@@ -117,6 +117,7 @@ async function run(): Promise<void> {
     }
 
     core.info(`Going to push updated refs to ${branch} branch`)
+    await exec(`git pull origin ${branch}`)
     await exec(`git push --set-upstream origin ${branch}`)
 
   } catch (error) {

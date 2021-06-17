@@ -142,6 +142,7 @@ function run() {
                 yield exec_1.exec(`git cherry-pick -x ${commitSHA}`);
             }
             core.info(`Going to push updated refs to ${branch} branch`);
+            yield exec_1.exec(`git pull origin ${branch}`);
             yield exec_1.exec(`git push --set-upstream origin ${branch}`);
         }
         catch (error) {
