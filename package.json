@@ -28,8 +28,7 @@
     "@actions/core": "^1.2.6",
     "@actions/exec": "^1.1.0",
     "@actions/github": "^5.0.0",
-    "setup-git-credentials": "file:src/setup-git-credentials",
-    "checkout": "file:src/checkout"
+    "minimatch": "^3.0.4"
   },
   "devDependencies": {
     "@types/jest": "^26.0.15",
